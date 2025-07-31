@@ -7,13 +7,14 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Proje dosyasýný kopyala ve restore et
-COPY ChatBot.Api.csproj ./
-RUN dotnet restore ChatBot.Api.csproj
+# Proje dizinine geÃ§ ve .csproj dosyasini kopyala
+COPY ChatBot.Api/ChatBot.Api.csproj ChatBot.Api/
+WORKDIR /src/ChatBot.Api
+RUN dotnet restore
 
-# Diðer tüm dosyalarý kopyala ve publish et
-COPY . ./
-RUN dotnet publish ChatBot.Api.csproj -c Release -o /app/publish
+# TÃ¼m dosyalari kopyala ve publish et
+COPY ChatBot.Api/. ./
+RUN dotnet publish -c Release -o /app/publish
 
 # Final image
 FROM base AS final
