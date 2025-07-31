@@ -1,4 +1,4 @@
-name: Build and Test .NET API
+name: Build and Dockerize .NET 8 API
 
 on:
   push:
@@ -27,3 +27,6 @@ jobs:
 
     - name: Publish
       run: dotnet publish ChatBot.Api/ChatBot.Api.csproj --configuration Release --output ./publish
+
+    - name: Build Docker image
+      run: docker build -t chatbot-api -f ChatBot.Api/Dockerfile .
