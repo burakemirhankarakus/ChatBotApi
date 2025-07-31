@@ -1,0 +1,29 @@
+name: Build and Test .NET API
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ChatBot.Api/ChatBot.Api.csproj
+
+    - name: Build
+      run: dotnet build ChatBot.Api/ChatBot.Api.csproj --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish ChatBot.Api/ChatBot.Api.csproj --configuration Release --output ./publish
